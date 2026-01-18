@@ -59,8 +59,10 @@ if(NOT TEST_INSTALLED_VERSION)
   endif()
 endif()
 
+set_target_properties(${PROJECT_NAME} PROPERTIES STATIC_DEPENDENCIES "")
+
 # Link dependencies
-target_link_libraries(${PROJECT_NAME} PRIVATE)
+target_link_libraries(${PROJECT_NAME} PRIVATE STATIC_DEPENDENCIES)
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
@@ -132,7 +134,7 @@ string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
 
 include(GNUInstallDirs)
 
-set(INSTALL_TARGETS ${PROJECT_NAME})
+set(INSTALL_TARGETS ${PROJECT_NAME} ${STATIC_LIB_DEPENDENCIES})
 
 install(
   TARGETS ${INSTALL_TARGETS}
