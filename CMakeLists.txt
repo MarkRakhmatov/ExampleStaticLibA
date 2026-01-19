@@ -59,28 +59,8 @@ if(NOT TEST_INSTALLED_VERSION)
   endif()
 endif()
 
-set_target_properties(${PROJECT_NAME} PROPERTIES STATIC_DEPENDENCIES "")
-get_target_property(STATIC_DEPENDENCIES ${PROJECT_NAME} STATIC_DEPENDENCIES)
-
 # Link dependencies
-if(NOT "${STATIC_DEPENDENCIES}" STREQUAL "")
-  message(STATUS "[${PROJECT_NAME}] Static dependencies: ${STATIC_DEPENDENCIES}")
-  foreach(item ${STATIC_DEPENDENCIES})
-    message(STATUS "[${PROJECT_NAME}] Linking static dependency ${item}")
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${item}::${item})
-
-    get_target_property(TMP_TRANSITIVE_STATIC_DEPENDENCIES ${item} STATIC_DEPENDENCIES)
-    if(NOT "${TMP_TRANSITIVE_STATIC_DEPENDENCIES}" STREQUAL "")
-      foreach(transitive_depend ${TMP_TRANSITIVE_STATIC_DEPENDENCIES})
-        message(
-          STATUS "[${PROJECT_NAME}] Linking transitive static dependency ${transitive_depend}"
-        )
-        target_link_libraries(${PROJECT_NAME} PRIVATE ${transitive_depend}::${transitive_depend})
-      endforeach()
-    endif()
-    list(APPEND TRANSITIVE_STATIC_DEPENDENCIES ${TMP_TRANSITIVE_STATIC_DEPENDENCIES})
-  endforeach()
-endif()
+target_link_libraries(${PROJECT_NAME} PRIVATE)
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
@@ -153,16 +133,6 @@ string(TOLOWER ${PROJECT_NAME}/version.h VERSION_HEADER_LOCATION)
 include(GNUInstallDirs)
 
 set(INSTALL_TARGETS ${PROJECT_NAME})
-
-message(STATUS "[${PROJECT_NAME}] Exporting static dependencies: ${STATIC_DEPENDENCIES}")
-list(APPEND INSTALL_TARGETS ${STATIC_DEPENDENCIES})
-
-message(
-  STATUS
-    "[${PROJECT_NAME}] Exporting transitive static dependencies: ${TRANSITIVE_STATIC_DEPENDENCIES}"
-)
-list(APPEND INSTALL_TARGETS ${TRANSITIVE_STATIC_DEPENDENCIES})
-
 install(
   TARGETS ${INSTALL_TARGETS}
   DESTINATION lib
