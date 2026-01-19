@@ -10,22 +10,22 @@ using namespace boost::ut;
 
 void tests() {
   "get string"_test = [] {
-    expect(!csl::getString().empty());
-    expect(csl::getString() == std::string("cpp static lib example"));
+    expect(!libA::getString().empty());
+    expect(libA::getString() == std::string("cpp static lib example"));
   };
 
   "factorial"_test = [] {
-    expect(csl::factorial(0) == 1_i);
-    expect(csl::factorial(1) == 1_i);
-    expect(csl::factorial(2) == 2_i);
-    expect(csl::factorial(12) == 479001600_i);
-    expect(csl::factorial(13) == -1_i);
+    expect(libA::factorial(0) == 1_i);
+    expect(libA::factorial(1) == 1_i);
+    expect(libA::factorial(2) == 2_i);
+    expect(libA::factorial(12) == 479001600_i);
+    expect(libA::factorial(13) == -1_i);
   };
 
   "factorial_constexpr"_test = [] {
-    static_assert(csl::factorialConstexpr(0) == 1_i);
-    static_assert(csl::factorialConstexpr(1) == 1_i);
-    static_assert(csl::factorialConstexpr(2) == 2_i);
+    static_assert(libA::factorialConstexpr(0) == 1_i);
+    static_assert(libA::factorialConstexpr(1) == 1_i);
+    static_assert(libA::factorialConstexpr(2) == 2_i);
   };
 }
 
